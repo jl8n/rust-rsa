@@ -11,7 +11,6 @@ mod tests;
 
 fn main() {
     let start = Instant::now();
-
     let text = read_file("src/data/string1.txt");
     let prime = generate_prime(&text, 200);
     println!("Generated prime: {}", prime);

@@ -1,19 +1,19 @@
+pub use crate::primes::is_prime::monte_carlo;
 use num_bigint::BigUint;
 use num_traits::{One, Zero};
 use std::fs;
-pub use crate::primes::is_prime::monte_carlo;
 
 /// Encode a base-26 string to a base-10 integer
 pub fn alphabet_to_base10(s: &String) -> BigUint {
-    let base10_str: String = s.chars()
-        .filter(|c| c.is_alphabetic())  // strip non-alphabet chars
-        .map(|c| c.to_ascii_lowercase() as u32 - 96)  // convert to ascii / subtract 96 so a == 1, z == 26
+    let base10_str: String = s
+        .chars()
+        .filter(|c| c.is_alphabetic()) // strip non-alphabet chars
+        .map(|c| c.to_ascii_lowercase() as u32 - 96) // convert to ascii / subtract 96 so a == 1, z == 26
         .map(|n| n.to_string())
         .collect();
     let byte_str = base10_str.as_bytes();
     BigUint::parse_bytes(byte_str, 10).unwrap()
 }
-
 
 /// Convert a sufficiently large number to a nearby prime of a set length
 pub fn nearby_prime(mut n: BigUint, length: u32) -> BigUint {
@@ -41,16 +41,13 @@ pub fn nearby_prime(mut n: BigUint, length: u32) -> BigUint {
     n
 }
 
-
 pub fn generate_prime(seed: &String, length: u32) -> BigUint {
     let pre_prime = alphabet_to_base10(&seed);
     let prime = nearby_prime(pre_prime, length);
     prime
 }
 
-
 pub fn read_file(file_path: &str) -> String {
-    let contents = fs::read_to_string(file_path)
-        .expect("Should have been able to read the file");
+    let contents = fs::read_to_string(file_path).expect("Should have been able to read the file");
     contents
 }
