@@ -5,6 +5,7 @@ mod tests {
         generate_prime::{alphabet_to_base10, generate_prime, nearby_prime},
         is_prime::{get_seed, monte_carlo},
     };
+    use crate::rsa::extended_euclid;
 
     use num_bigint::BigUint;
 
@@ -63,6 +64,16 @@ mod tests {
         }
 
         assert!(dif_count == 0);
+    }
+
+    #[test]
+    fn test_extended_euclid() {
+        let a = BigUint::from(240u8);
+        let b = BigUint::from(46u8);
+        let (gcd, x, y) = extended_euclid(&a, &b);
+        assert_eq!(gcd, BigUint::from(2u8));
+        assert_eq!(x, BigUint::from(47u8));
+        assert_eq!(y, BigUint::from(9u8));
     }
 }
 
