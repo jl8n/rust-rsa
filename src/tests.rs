@@ -7,7 +7,7 @@ mod tests {
     };
     use crate::rsa::extended_euclid;
 
-    use num_bigint::BigUint;
+    use num_bigint::{BigInt, BigUint};
 
     #[test]
     fn test_generate_prime() {
@@ -68,12 +68,10 @@ mod tests {
 
     #[test]
     fn test_extended_euclid() {
-        let a = BigUint::from(240u8);
-        let b = BigUint::from(46u8);
-        let (gcd, x, y) = extended_euclid(&a, &b);
-        assert_eq!(gcd, BigUint::from(2u8));
-        assert_eq!(x, BigUint::from(47u8));
-        assert_eq!(y, BigUint::from(9u8));
+        let (gcd, x, y) = extended_euclid(&BigInt::from(180u8), &BigInt::from(150u8));
+        assert_eq!(gcd, BigInt::from(30u8));
+        assert_eq!(x, BigInt::from(1u8));
+        assert_eq!(y, BigInt::from(-1i8));
     }
 }
 
