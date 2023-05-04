@@ -5,7 +5,7 @@ mod tests {
         generate_prime::{alphabet_to_base10, generate_prime, nearby_prime},
         is_prime::{get_seed, monte_carlo},
     };
-    use crate::rsa::{extended_euclid, generate_keys, modular_inv};
+    use crate::rsa::{extended_euclid, generate_rsa_key_components, modular_inv};
 
     use num_bigint::BigInt;
 
@@ -101,11 +101,11 @@ mod tests {
     }
 
     #[test]
-    fn test_generate_keys() {
+    fn test_generate_rsa_key_components() {
         // Test case 1: Small prime numbers
         let p = BigInt::from(17u32);
         let q = BigInt::from(19u32);
-        let (n, e, d) = generate_keys(&p, &q);
+        let (n, e, d) = generate_rsa_key_components(&p, &q);
         assert_eq!(n, BigInt::from(323u32));
         assert_eq!(e, BigInt::from(65537u32));
         assert_eq!(d, BigInt::from(161u32));
@@ -113,7 +113,7 @@ mod tests {
         // Test case 2: Large prime numbers
         let p = BigInt::parse_bytes(b"36901412150694956828426050716714926", 10).unwrap();
         let q = BigInt::parse_bytes(b"32384934706043254187408503230356433", 10).unwrap();
-        let (n, e, d) = generate_keys(&p, &q);
+        let (n, e, d) = generate_rsa_key_components(&p, &q);
         assert_eq!(
             n,
             BigInt::parse_bytes(
@@ -135,7 +135,7 @@ mod tests {
         // Test case 3: Large prime numbers with a zero d value
         let p = BigInt::parse_bytes(b"217744268732466017238455975905810073035", 10).unwrap();
         let q = BigInt::parse_bytes(b"170141183460469231731687303715884105727", 10).unwrap();
-        let (n, e, d) = generate_keys(&p, &q);
+        let (n, e, d) = generate_rsa_key_components(&p, &q);
         assert_eq!(
             n,
             BigInt::parse_bytes(
