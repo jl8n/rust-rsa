@@ -1,6 +1,6 @@
 use crate::{
     primes::generate_prime::{generate_prime, read_file},
-    rsa::generate_key,
+    rsa::generate_keys,
 };
 use std::time::Instant;
 
@@ -20,7 +20,7 @@ fn main() {
     let prime1 = generate_prime(&text1, 200);
     let prime2 = generate_prime(&text2, 200);
 
-    generate_key(&prime1, &prime2);
+    generate_keys(&prime1, &prime2);
 
     let duration = start.elapsed();
     println!("Time elapsed: {:?}", duration);
