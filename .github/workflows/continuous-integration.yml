@@ -20,7 +20,7 @@ jobs:
         toolchain: stable
 
     - name: 🏗️ Build
-      run: cargo build --release --verbose
+      run: cargo build --release
 
     - name: 🧪 Test
-      run: cargo test --verbose
+      run: cargo test
