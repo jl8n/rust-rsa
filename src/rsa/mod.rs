@@ -1,5 +1,7 @@
-use num_bigint::{BigInt, BigUint};
+use num_bigint::BigInt;
 use num_traits::{One, Zero};
+use pem::{encode, Pem};
+use simple_asn1::{to_der, ASN1Block};
 
 pub fn extended_euclid(a: &BigInt, b: &BigInt) -> (BigInt, BigInt, BigInt) {
     if a == &BigInt::zero() {
@@ -24,7 +26,7 @@ pub fn modular_inv(a: &BigInt, m: &BigInt) -> Result<BigInt, String> {
     }
 }
 
-pub fn generate_keys(p: &BigInt, q: &BigInt) -> (BigInt, BigInt, BigInt) {
+pub fn generate_rsa_key_components(p: &BigInt, q: &BigInt) -> (BigInt, BigInt, BigInt) {
     let n = p * q;
     let r = (p - BigInt::one()) * (q - BigInt::one()); // `r` is the totient phi(n)
     let e = BigInt::from(65537u32); // `e` is relatively prime with r
@@ -35,4 +37,27 @@ pub fn generate_keys(p: &BigInt, q: &BigInt) -> (BigInt, BigInt, BigInt) {
     }); // d = inverse of `e mod r`
 
     (n, e, d)
+}
+
+fn encode_public_key(n: &BigInt, e: &BigInt) -> Vec<u8> {
+    let public_key = vec![
+        ASN1Block::Integer(0, n.clone()),
+        ASN1Block::Integer(0, e.clone()),
+    ];
+    to_der(&ASN1Block::Sequence(0, public_key)).unwrap()
+}
+
+fn encode_private_key(n: &BigInt, d: &BigInt) -> Vec<u8> {
+    let private_key = vec![
+        ASN1Block::Integer(0, n.clone()),
+        ASN1Block::Integer(0, d.clone()),
+    ];
+    to_der(&ASN1Block::Sequence(0, private_key)).unwrap()
+}
+
+pub fn write_keys_to_pem_files(n: &BigInt, e: &BigInt, d: &BigInt) {
+    let public_key_pem = Pem::new("RSA PUBLIC KEY", encode_public_key(n, e));
+    let private_key_pem = Pem::new("RSA PRIVATE KEY", encode_private_key(n, d));
+    std::fs::write("public_key.pem", encode(&public_key_pem)).unwrap();
+    std::fs::write("private_key.pem", encode(&private_key_pem)).unwrap();
 }

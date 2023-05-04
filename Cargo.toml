@@ -8,4 +8,6 @@ fs = "0.0.5"
 num-bigint = { version = "0.4.3", features = ["rand"] }
 num-iter = "0.1.43"
 num-traits = "0.2.15"
+pem = "2.0.1"
 rand = "0.8.5"
+simple_asn1 = "0.6.2"
